@@ -29,6 +29,42 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+     integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"></script>
+    <script>
+      
+      var outputArea = $("#chat-output");
+
+      $("#user-input-form").on("submit", function(e) {
+        alert("testing....")
+  
+  e.preventDefault();
+  
+  var message = $("#user-input").val();
+  
+  outputArea.append(`
+    <div class='bot-message'>
+      <div class='message'>
+        ${message}
+      </div>
+    </div>
+  `);
+  
+  setTimeout(function() {
+    outputArea.append(`
+      <div class='user-message'>
+        <div class='message'>
+          I'm like 20 lines of JavaScript I can't actually talk to you.
+        </div>
+      </div>
+    `);
+  }, 250);
+  
+  $("#user-input").val("");
+  
+});
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
