@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import './App.css';
+import sendIcon from '../src/images/send_arrow.png';
 
 
 // const getRes=()=>{
@@ -54,8 +55,9 @@ class App extends Component{
 			conversation: [{
 				question: "Hi! I'm a bot. What's up???",
 				answer: ''
-			}] 
-		};
+				
+				}] 
+			};
 	  }
 
 	  componentDidMount() {
@@ -64,10 +66,12 @@ class App extends Component{
 	  }
 
 	  handleChange=(e) => {
+		e.preventDefault();
 		this.setState({ output: e.target.value });
-	  }
+ }
 
 	  getOutPut = () => {
+		
 		let output = this.state.conversation.map((item, index) => {
 			return(
 			<div>
@@ -79,7 +83,11 @@ class App extends Component{
 		)	
 		});
 		return output;
+		
 	  }
+	//   getOutPutWithButton = () => {
+	// 	  let outputwithButton = 
+	//   }
 
 	  getRes=()=>{
 		console.log(this.state.output);
@@ -97,8 +105,8 @@ class App extends Component{
 		}
 		const url = "http://13.75.106.59/syntbots-ai/v3/converse_api/prediction"; 
 		const body = JSON.stringify({
-			"sessionid": "017",
-			"conversation_name": "hire_1",
+			"sessionid": "020",
+			"conversation_name": "new_hire",
 			"user_query": this.state.output   
 		});
 		axios.post(url, body, {headers}).then(response => {
@@ -112,9 +120,21 @@ class App extends Component{
 				answers:[...this.state.answers, response.data.text],
 				conversation: [...this.state.conversation, conversation]
 			 })
-			 
-		})		
-		}
+
+		})	
+		
+	// const optionsMarkup = options.map((option) => (
+		// 	<button
+		// 	  className="option-button"
+		// 	  key={option.id}
+		// 	  onClick={option.handler}
+		// 	>
+		// 	  {option.text}
+		// 	</button>
+		//   ));
+		
+		 
+		 }
 
   render(){
 	  console.log('Conversation', this.state.conversation);
@@ -125,9 +145,10 @@ class App extends Component{
 			{this.getOutPut()}
 			<div className="chat-input">
 			  
-			  <input type="text" id="user-input" className="user-input" onChange={ this.handleChange } placeholder="Talk to the bot." />
-			  <button onClick={this.getRes}>ENTER</button>
-  
+			  <input type="text" id="user-input" className="user-input"
+			  onChange={ this.handleChange } placeholder="Talk to the bot."/>
+			  {/* <button onClick={this.getRes}><i class="arrow right"></i></button> */}
+			  <img id = "userinput_img" src = {sendIcon} style = {{width:38}} onClick={this.getRes} ></img>
 		  </div>
 		</div>
 		</>

@@ -51,6 +51,7 @@ body {
 }
 
 .chat-input {
+  position: relative;
   padding: 20px;
   background: #eee;
   border: 1px solid #ccc;
@@ -62,4 +63,14 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;
+  /* background: url(../src/images/send_arrow.png) no-repeat right center; */
 }
+#userinput_img{
+  position: absolute;
+  right: 50px;
+  top: 30px;
+  
+
+}
+
+
