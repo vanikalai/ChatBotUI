@@ -3,31 +3,13 @@ import React, { Component } from 'react';
 import './App.css';
 import sendIcon from '../src/images/send_arrow.png';
 
-
-  const output=()=>{
-  	 return(
-  	 	<>
-  	 		   <div class='bot-message'>
-			      <div class='message'>
-			    		 hi
-			      </div>
-  			  </div>
-			    <div className='user-message'>
-			        <div className='message'>
-			          	{this.state.output}
-			        </div>
-		        </div>
-  	 	</>
-
-  	 )
-  }
-
 class App extends Component{
 
 	constructor() {
 		super();
 		this.state = {
 			output: "Howdy",
+			input: '',
 			questions: ["Hi! I'm a bot. What's up???"],
 			answers: [],
 			conversation: [{
@@ -44,15 +26,14 @@ class App extends Component{
 	  }
 
 	  handleChange=(e) => {
-		this.setState({ output: e.target.value });
+		this.setState({ output: e.target.value, input: e.target.value });
  	}
 
 	 handleClick=(e) => {
 		const value = e.target.value;
-		this.setState({ output: value });
-		console.log('value', value)
-		console.log('value', e.target.value)
-		this.getRes();
+		this.setState({ output: value }, () => {
+			this.getRes();
+		});
  	}
 
 	 showButton = (item, i) => {
@@ -75,10 +56,10 @@ class App extends Component{
 		let output = this.state.conversation.map((item, index) => {
 			return(
 			<div>
-			<div className="user-message" key={index}>
+			<div className="user-message" key={index} style={{textAlign: 'end'}}>
 				<div className="message">{item.question}</div>					
 			</div>
-			 <div className="message">{item.answer}</div>
+			 {item.answer != ''?<div className="user-message" style={{marginTop: 5}}><div className="message">{item.answer}</div></div>:null}
 			 <div>{this.showButton(item, index)}</div>
 		</div>
 		
@@ -104,7 +85,7 @@ class App extends Component{
 		}
 		const url = "http://13.75.106.59/syntbots-ai/v3/converse_api/prediction"; 
 		const body = JSON.stringify({
-			"sessionid": "032",
+			"sessionid": "033",
 			"conversation_name": "new_hire",
 			"user_query": this.state.output   
 		});
@@ -117,8 +98,7 @@ class App extends Component{
 					textType: response.data.type
 				}
 				this.setState({
-					// questions: [...this.state.questions, this.state.output],
-					// answers:[...this.state.answers, response.data.text],
+					input: '',
 					conversation: [...this.state.conversation, conversation]
 				 })
 			} else if(response.data.button_text){
@@ -129,8 +109,7 @@ class App extends Component{
 					buttonValues: response.data.button_values
 				}
 				this.setState({
-					// questions: [...this.state.questions, this.state.output],
-					// answers:[...this.state.answers, response.data.button_text],
+					input: '',
 					conversation: [...this.state.conversation, conversation]
 					
 				 })
@@ -138,19 +117,8 @@ class App extends Component{
 			
 
 		})	
-		
-	// const optionsMarkup = options.map((option) => (
-		// 	<button
-		// 	  className="option-button"
-		// 	  key={option.id}
-		// 	  onClick={option.handler}
-		// 	>
-		// 	  {option.text}
-		// 	</button>
-		//   ));
-		
 		 
-		 }
+		}
 
   render(){
 	  console.log('Conversation', this.state.conversation);
@@ -161,10 +129,9 @@ class App extends Component{
 			{this.getOutPut()}
 			<div className="chat-input">
 			  
-			  <input type="text" id="user-input" className="user-input"
+			  <input type="text" id="user-input" className="user-input" value={this.state.input}
 			  onChange={ this.handleChange } placeholder="Talk to the bot."/>
-			  {/* <button onClick={this.getRes}><i class="arrow right"></i></button> */}
-			  <img id = "userinput_img" src = {sendIcon} style = {{width:38}} onClick={this.getRes} ></img>
+			  <img id = "userinput_img" src = {sendIcon} style = {{width:22}} onClick={this.getRes} ></img>
 		  </div>
 		</div>
 		</>
