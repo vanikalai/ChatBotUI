@@ -37,6 +37,7 @@ body {
 .chat-output .user-message .message {
   background: #0FB0DF;
   color: white;
+  text-align: end;
 }
 .chat-output .bot-message {
   text-align: right;
@@ -71,6 +72,21 @@ body {
   top: 30px;
   
 
+}
+
+.button-text {
+  margin-right: 20px;
+  margin-left:20px;
+  margin-top: 10px;
+  padding:10px;
+  color:#fff;
+  border-radius:10px;
+  border: none;
+  font-size: medium;
+  font-weight: 600;
+  background-color: #0FB0DF;
+  
+  
 }
 
 

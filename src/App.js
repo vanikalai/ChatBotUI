@@ -4,28 +4,6 @@ import './App.css';
 import sendIcon from '../src/images/send_arrow.png';
 
 
-// const getRes=()=>{
-// 	let headers = new Headers();
-// 	headers.append('Access-Control-Allow-Origin','*');
-//     headers.append('Content-Type', 'application/json');
-    
-
-// 	const url = "http://13.75.106.59/syntbots-ai/v3/converse_api/prediction"; 
-// 	fetch(url, {
-		
-// 		method: 'POST',
-// 		headers: headers,
-// 		body: JSON.stringify({
-// 			"sessionid": "017",
-// 			"conversation_name": "hire_1",
-// 			"user_query": "Howdy"   
-// 		})
-		
-// 	})
-// 	.then(response => this.setState({output: response.text()}))
-// 	.then(contents => console.log(contents))
-// 	.catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))
-// 	}
   const output=()=>{
   	 return(
   	 	<>
@@ -66,9 +44,31 @@ class App extends Component{
 	  }
 
 	  handleChange=(e) => {
-		e.preventDefault();
 		this.setState({ output: e.target.value });
- }
+ 	}
+
+	 handleClick=(e) => {
+		const value = e.target.value;
+		this.setState({ output: value });
+		console.log('value', value)
+		console.log('value', e.target.value)
+		this.getRes();
+ 	}
+
+	 showButton = (item, i) => {
+		if(item.textType === 'LIST_BUTTON' && i === this.state.conversation.length-1){
+			console.log(item)
+			let buttonText = item.buttonValues.map((buttonText) => {
+				return(
+					<div style={{float: 'left'}}>
+						<button key={i} className="button-text" onClick={this.handleClick} value={buttonText.button_label}>{buttonText.button_label}</button>
+					</div>
+					
+				)
+			})
+			return buttonText;
+		}
+	 }
 
 	  getOutPut = () => {
 		
@@ -79,16 +79,15 @@ class App extends Component{
 				<div className="message">{item.question}</div>					
 			</div>
 			 <div className="message">{item.answer}</div>
+			 <div>{this.showButton(item, index)}</div>
 		</div>
+		
 		)	
 		});
 		return output;
 		
 	  }
-	//   getOutPutWithButton = () => {
-	// 	  let outputwithButton = 
-	//   }
-
+	
 	  getRes=()=>{
 		console.log(this.state.output);
 		const username = 'sbaiserviceuser'
@@ -105,21 +104,38 @@ class App extends Component{
 		}
 		const url = "http://13.75.106.59/syntbots-ai/v3/converse_api/prediction"; 
 		const body = JSON.stringify({
-			"sessionid": "020",
+			"sessionid": "032",
 			"conversation_name": "new_hire",
 			"user_query": this.state.output   
 		});
 		axios.post(url, body, {headers}).then(response => {
 			console.log(response.data);
-			let conversation = {
-				question: this.state.output,
-				answer: response.data.text
+			if(response.data.text){
+				let conversation = {
+					question: this.state.output,
+					answer: response.data.text,
+					textType: response.data.type
+				}
+				this.setState({
+					// questions: [...this.state.questions, this.state.output],
+					// answers:[...this.state.answers, response.data.text],
+					conversation: [...this.state.conversation, conversation]
+				 })
+			} else if(response.data.button_text){
+				let conversation = {
+					question: this.state.output,
+					answer: response.data.button_text,
+					textType: response.data.type,
+					buttonValues: response.data.button_values
+				}
+				this.setState({
+					// questions: [...this.state.questions, this.state.output],
+					// answers:[...this.state.answers, response.data.button_text],
+					conversation: [...this.state.conversation, conversation]
+					
+				 })
 			}
-			this.setState({
-				questions: [...this.state.questions, this.state.output],
-				answers:[...this.state.answers, response.data.text],
-				conversation: [...this.state.conversation, conversation]
-			 })
+			
 
 		})	
 		
