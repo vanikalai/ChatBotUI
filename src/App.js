@@ -123,7 +123,7 @@ class App extends Component{
   render(){
 	  console.log('Conversation', this.state.conversation);
 	return (
-		<>
+		<div className = "chat-background">
 
 		<div className="chat-output" id="chat-output">
 			{this.getOutPut()}
@@ -134,7 +134,7 @@ class App extends Component{
 			  <img id = "userinput_img" src = {sendIcon} style = {{width:22}} onClick={this.getRes} ></img>
 		  </div>
 		</div>
-		</>
+		</div>
 	  )
   }
   

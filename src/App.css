@@ -21,7 +21,15 @@ body {
   display: flex;
   flex-direction: column;
   max-width: 700px;
+  height: 500px;
   margin: 0 auto;
+  overflow-y: scroll;
+}
+.chat-background{
+  position: relative;
+  background: white;
+  height: 100%;
+  width: 700px;
 }
 
 .chat-output {
@@ -52,7 +60,9 @@ body {
 }
 
 .chat-input {
-  position: relative;
+  position: fixed;
+  bottom: 0px;
+  width: 700px;
   padding: 20px;
   background: #eee;
   border: 1px solid #ccc;
@@ -64,6 +74,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;
+  
   /* background: url(../src/images/send_arrow.png) no-repeat right center; */
 }
 #userinput_img{
