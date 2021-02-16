@@ -2,14 +2,17 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import './App.css';
 import sendIcon from '../src/images/send_arrow.png';
+import avatar from './images/avatar.png';
 
 class App extends Component{
 
 	constructor() {
 		super();
+	    const randNo =Math.floor(Math.random()*(999-100+1)+100);
 		this.state = {
 			output: "Howdy",
 			input: '',
+			random: randNo,
 			questions: ["Hi! I'm a bot. What's up???"],
 			answers: [],
 			conversation: [{
@@ -21,8 +24,12 @@ class App extends Component{
 	  }
 
 	  componentDidMount() {
-		this.getRes();		
-		
+		this.getRes();	
+         document.getElementById('chat-output').scrollTop = 9999999;		
+	  }
+
+	  componentDidUpdate() {
+		document.getElementById('chat-output').scrollTop = 9999999;
 	  }
 
 	  handleChange=(e) => {
@@ -56,10 +63,13 @@ class App extends Component{
 		let output = this.state.conversation.map((item, index) => {
 			return(
 			<div>
+			{index!=0 && index!=1?
 			<div className="user-message" key={index} style={{textAlign: 'end'}}>
-				<div className="message">{item.question}</div>					
-			</div>
-			 {item.answer != ''?<div className="user-message" style={{marginTop: 5}}><div className="message">{item.answer}</div></div>:null}
+			
+				<div className="message">{item.question} </div><img src={avatar} width='45' height='45' className="floatRight" />					
+			</div>:""
+		    }
+			 {item.answer != ''?<div className="user-message" style={{marginTop: 5}}><img src={avatar} className="floatLeft" width='45' height='45' /><div className="message">{item.answer}</div> </div>:null}
 			 <div>{this.showButton(item, index)}</div>
 		</div>
 		
@@ -70,7 +80,7 @@ class App extends Component{
 	  }
 	
 	  getRes=()=>{
-		console.log(this.state.output);
+	
 		const username = 'sbaiserviceuser'
 		const password = 'syntbot123$'
 
@@ -84,8 +94,9 @@ class App extends Component{
 			
 		}
 		const url = "http://13.75.106.59/syntbots-ai/v3/converse_api/prediction"; 
+
 		const body = JSON.stringify({
-			"sessionid": "033",
+			"sessionid": this.state.random,
 			"conversation_name": "new_hire",
 			"user_query": this.state.output   
 		});
@@ -124,16 +135,20 @@ class App extends Component{
 	  console.log('Conversation', this.state.conversation);
 	return (
 		<div className = "chat-background">
+		 <div className="chat-heading">
+		    <h3> Atos Syntel L0 Interview Process </h3>
+		 </div>
 
 		<div className="chat-output" id="chat-output">
 			{this.getOutPut()}
-			<div className="chat-input">
+
+		</div>
+					<div className="chat-input">
 			  
-			  <input type="text" id="user-input" className="user-input" value={this.state.input}
+			  <input type="text" id="user-input" autocomplete="off" className="user-input" value={this.state.input}
 			  onChange={ this.handleChange } placeholder="Talk to the bot."/>
 			  <img id = "userinput_img" src = {sendIcon} style = {{width:22}} onClick={this.getRes} ></img>
 		  </div>
-		</div>
 		</div>
 	  )
   }
