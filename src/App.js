@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import sendIcon from '../src/images/send_arrow.png';
 import avatar from './images/avatar.png';
+import bot from './images/bot.png';
 
 class App extends Component{
 
@@ -69,7 +70,7 @@ class App extends Component{
 				<div className="message">{item.question} </div><img src={avatar} width='45' height='45' className="floatRight" />					
 			</div>:""
 		    }
-			 {item.answer != ''?<div className="user-message" style={{marginTop: 5}}><img src={avatar} className="floatLeft" width='45' height='45' /><div className="message">{item.answer}</div> </div>:null}
+			 {item.answer != ''?<div className="user-message" style={{marginTop: 5}}><img src={bot} className="floatLeft" width='45' height='45' /><div className="message" style={{backgroundColor: '#0FB1C6'}}>{item.answer}</div> </div>:null}
 			 <div>{this.showButton(item, index)}</div>
 		</div>
 		
